@@ -1,2 +1,8 @@
 4. Why can't FilterBar and TaskList share filter state directly, without lifting it to a shared parent?
   They can't share the filter directly. Because both of them are siblings, and one of them (FilterBar) changes the state while the other one (TaskList) reads it, so the common parent, TaskBoard, has to hold the state.
+
+5. What would go wrong, specifically, if TaskList used the array index as each TaskCard's key instead of task.id?
+  For example, we have a list [A, B, C] and the keys are 0, 1, 2. If we take A off the list, the others move up. React says there is still a card number 0, but this card is not the same as before: it used to have A inside. In this state, the checked checkbox moves to B, which means that when the order changes, React matches the cards wrongly and the state moves to the wrong place. When we use task.id as the key, each task keeps its own id, so this does not happen.
+
+6. In the sentence "props flow down, requests flow up," what in your TaskBoard app is an example of each direction?
+  Props flow down, requests flow up. Think of a tree: TaskBoard is at the top, and the data always goes down, from TaskBoard to TaskList to TaskCard. The top component says "take this data and show it", and the lower component can only read it. The lower component cannot change the data. Instead, it calls a function to ask "can you change this?", and the change is always made by the top component. For example, `tasks` flows down from TaskBoard to TaskList as a prop, and `onToggleTask` is a request that goes up from TaskCard to TaskBoard when a checkbox is clicked.
