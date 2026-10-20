@@ -1,0 +1,2 @@
+1. what is the difference between title (a prop) and done (now state)? Why can TaskCard change one but not the other?
+  The prop comes from outside, so the card can only read it. The state is inside the card and can be changed with `setDone`. The parent owns the prop, so only the parent can change it. The card owns the state, so the card can change it.
