@@ -1,0 +1,2 @@
+4. Why can't FilterBar and TaskList share filter state directly, without lifting it to a shared parent?
+  They can't share the filter directly. Because both of them are siblings, and one of them (FilterBar) changes the state while the other one (TaskList) reads it, so the common parent, TaskBoard, has to hold the state.
