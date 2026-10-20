@@ -1,13 +1,7 @@
-import TaskList from "./TaskList";
-import NewTaskInput from "./NewTaskInput";
+import TaskBoard from "./TaskBoard";
 
 function App() {
-  return (
-    <>
-      <NewTaskInput />
-      <TaskList />
-    </>
-  );
+  return <TaskBoard />;
 }
 
 export default App;

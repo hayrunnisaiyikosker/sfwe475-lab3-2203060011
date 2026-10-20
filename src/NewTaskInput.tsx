@@ -1,10 +1,11 @@
 import { useState } from "react";
 
-function NewTaskInput() {
+function NewTaskInput({ onAddTask }: { onAddTask: (title: string) => void }) {
   const [text, setText] = useState("");
 
   function handleAdd() {
-    console.log(text);
+    if (text.trim() === "") return;
+    onAddTask(text);
     setText("");
   }
 
