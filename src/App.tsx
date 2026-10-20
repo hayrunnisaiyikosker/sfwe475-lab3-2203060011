@@ -1,7 +1,13 @@
 import TaskList from "./TaskList";
+import NewTaskInput from "./NewTaskInput";
 
 function App() {
-  return <TaskList />;
+  return (
+    <>
+      <NewTaskInput />
+      <TaskList />
+    </>
+  );
 }
 
 export default App;

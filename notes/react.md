@@ -3,3 +3,6 @@
 
 2. why using the map() callback's array index (e.g. key={index}) instead of task.id is risky if the list can be reordered or filtered?
   React matches cards by their position in the list, not by their identity. When the order changes, one card's state can end up on the wrong card. Using `task.id` as the key avoids this, because each task keeps the same identity.
+
+3. Then, as a quick experiment, temporarily remove the onChange handler and try typing again — note what happens in 
+  When there is no onChange, I couldn't type anything, because the state does not change and the input always shows the empty value in the state.
