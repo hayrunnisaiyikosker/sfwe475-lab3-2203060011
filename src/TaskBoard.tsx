@@ -1,16 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Task } from "./schemas";
 import TaskList from "./TaskList";
 import NewTaskInput from "./NewTaskInput";
 import FilterBar from "./FilterBar";
 import type { Filter } from "./FilterBar";
 
-function TaskBoard() {
-  const [tasks, setTasks] = useState<Task[]>([
+const STORAGE_KEY = "task-board-tasks";
+
+function loadTasks(): Task[] {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    return JSON.parse(saved);
+  }
+  return [
     { id: 1, title: "Read Chapter 3", done: false },
     { id: 2, title: "Build TaskCard", done: true },
-  ]);
+  ];
+}
+
+function TaskBoard() {
+  const [tasks, setTasks] = useState<Task[]>(loadTasks);
   const [filter, setFilter] = useState<Filter>("all");
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  }, [tasks]);
 
   function handleAddTask(title: string) {
     setTasks([...tasks, { id: tasks.length + 1, title, done: false }]);
