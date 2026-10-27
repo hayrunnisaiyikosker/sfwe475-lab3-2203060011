@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import type { Task } from "./schemas";
 import { simulateFetchTasks } from "./mockApi";
 import TaskList from "./TaskList";
@@ -6,20 +6,37 @@ import NewTaskInput from "./NewTaskInput";
 import FilterBar from "./FilterBar";
 import type { Filter } from "./FilterBar";
 
+const MIN_LOADING_MS = 400;
+
 function TaskBoard() {
   const [status, setStatus] =
     useState<"loading" | "success" | "empty" | "error">("loading");
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<Filter>("all");
 
-  useEffect(() => {
-    simulateFetchTasks()
-      .then((data) => {
-        setTasks(data);
-        setStatus(data.length === 0 ? "empty" : "success");
-      })
-      .catch(() => setStatus("error"));
+  const loadTasks = useCallback(() => {
+    setStatus("loading");
+    const start = Date.now();
+
+    const finish = (apply: () => void) => {
+      const elapsed = Date.now() - start;
+      const remaining = Math.max(0, MIN_LOADING_MS - elapsed);
+      setTimeout(apply, remaining);
+    };
+
+    simulateFetchTasks({ delayMs: 50 }) 
+      .then((data) =>
+        finish(() => {
+          setTasks(data);
+          setStatus(data.length === 0 ? "empty" : "success");
+        })
+      )
+      .catch(() => finish(() => setStatus("error")));
   }, []);
+
+  useEffect(() => {
+    loadTasks();
+  }, [loadTasks]);
 
   function handleAddTask(title: string) {
     setTasks([...tasks, { id: tasks.length + 1, title, done: false }]);
@@ -34,7 +51,13 @@ function TaskBoard() {
   }
 
   if (status === "loading") return <p>Loading tasks...</p>;
-  if (status === "error") return <p>We couldn't load your tasks.</p>;
+  if (status === "error")
+    return (
+      <div>
+        <p>We couldn't load your tasks.</p>
+        <button onClick={loadTasks}>Try again</button>
+      </div>
+    );
   if (status === "empty") return <p>No tasks yet. Add your first one below.</p>;
 
   return (
