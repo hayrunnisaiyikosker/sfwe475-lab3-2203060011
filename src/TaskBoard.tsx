@@ -63,7 +63,7 @@ function TaskBoard() {
   const showContent = status === "success" || status === "empty";
 
   return (
-    <div>
+    <main>
       <div aria-live="polite">
         {status === "loading" && <p>Loading tasks...</p>}
 
@@ -102,7 +102,7 @@ function TaskBoard() {
           )}
         </>
       )}
-    </div>
+    </main>
   );
 }
 
