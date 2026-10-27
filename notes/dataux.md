@@ -14,3 +14,10 @@
 
 ## explain why the disabled button alone is not a substitute for the Zod check
   When the title is empty, the system can disable the button to help the user understand that they must enter a title first. But this does not mean the data is always correct. The user can remove the disabled attribute or submit the form in another way. There is still a chance that an empty title can be sent. That is why we need Zod validation too. If we only use the disabled button, we may miss invalid data.
+
+## Record the score
+  Before score: 98
+  Issue: The page did not have a main landmark.
+  Fix: I added a <main> element to identify the main content of the page. This helps screen reader users navigate the page more easily.
+  After score: 100
+  I ran Lighthouse again after the fix to check the accessibility score and verify that the issue was resolved.
