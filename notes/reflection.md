@@ -18,3 +18,9 @@
 
 9. aria-live and Loading Messages (Strand 3)
   aria-live helps screen readers announce changes on the page. A sighted user can see the loading message, but a screen reader user may not notice the change automatically. With aria-live, the user can hear that the system is loading data.
+
+
+## AI URL
+  https://claude.ai/share/3eb84f39-cb81-4fd1-b041-830225ce3dac
+
+  https://claude.ai/share/d5bd38a6-2f44-4c48-a3bb-e0a96de9e026
