@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
-import type { Task } from "./schemas";
+import type { Task, CreateTaskInput } from "./schemas";
 import { simulateFetchTasks } from "./mockApi";
 import TaskList from "./TaskList";
-import NewTaskInput from "./NewTaskInput";
+import NewTaskForm from "./NewTaskForm";
 import FilterBar from "./FilterBar";
 import type { Filter } from "./FilterBar";
 
@@ -24,7 +24,7 @@ function TaskBoard() {
       setTimeout(apply, remaining);
     };
 
-    simulateFetchTasks({ delayMs: 50 }) 
+    simulateFetchTasks() // delayMs: 50 testini kaldırdım
       .then((data) =>
         finish(() => {
           setTasks(data);
@@ -38,8 +38,12 @@ function TaskBoard() {
     loadTasks();
   }, [loadTasks]);
 
-  function handleAddTask(title: string) {
-    setTasks([...tasks, { id: tasks.length + 1, title, done: false }]);
+  function handleAddTask(input: CreateTaskInput) {
+    setTasks((prev) => [
+      ...prev,
+      { id: prev.length + 1, title: input.title, done: false },
+    ]);
+    setStatus("success");
   }
 
   function handleToggleTask(id: number) {
@@ -58,17 +62,22 @@ function TaskBoard() {
         <button onClick={loadTasks}>Try again</button>
       </div>
     );
-  if (status === "empty") return <p>No tasks yet. Add your first one below.</p>;
 
   return (
     <div>
-      <NewTaskInput onAddTask={handleAddTask} />
-      <FilterBar filter={filter} onFilterChange={setFilter} />
-      <TaskList
-        tasks={tasks}
-        filter={filter}
-        onToggleTask={handleToggleTask}
-      />
+      <NewTaskForm onAddTask={handleAddTask} />
+      {status === "empty" ? (
+        <p>No tasks yet. Add your first one below.</p>
+      ) : (
+        <>
+          <FilterBar filter={filter} onFilterChange={setFilter} />
+          <TaskList
+            tasks={tasks}
+            filter={filter}
+            onToggleTask={handleToggleTask}
+          />
+        </>
+      )}
     </div>
   );
 }

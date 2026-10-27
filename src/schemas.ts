@@ -6,3 +6,9 @@ export const TaskSchema = z.object({
  dueDate: z.string().optional(),
 });
 export type Task = z.infer<typeof TaskSchema>;
+
+export const CreateTaskSchema = z.object({
+ title: z.string().min(1, "Title is required"),
+ dueDate: z.string().optional(),
+});
+export type CreateTaskInput = z.infer<typeof CreateTaskSchema>;
