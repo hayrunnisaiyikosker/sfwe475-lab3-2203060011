@@ -7,3 +7,7 @@
 
 ## why a real app might want this, even though it makes fast responses artificially slower.
   If a response arrives in 50ms, the loading message appears and disappears too quickly. The user cannot read it, and the screen may look like it is flickering. By keeping the loading message visible for a minimum time, the system can make the transition smoother and easier to follow. However, this also makes fast responses slower, so the minimum time should be short.
+
+## Strand 3: Keyboard-only test
+  It worked verry well actually.
+  Updated filter button labels to make their purpose clearer and added `aria-pressed` to communicate the selected filter state to screen readers.

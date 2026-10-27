@@ -54,32 +54,38 @@ function TaskBoard() {
     );
   }
 
-  if (status === "loading") return <p>Loading tasks...</p>;
-  if (status === "error")
-    return (
-      <div>
-        <p>We couldn't load your tasks.</p>
-        <button onClick={loadTasks}>Try again</button>
-      </div>
-    );
+    const showContent = status === "success" || status === "empty";
 
   return (
     <div>
-      <NewTaskForm onAddTask={handleAddTask} />
-      {status === "empty" ? (
-        <p>No tasks yet. Add your first one below.</p>
-      ) : (
+      <div aria-live="polite">
+        {status === "loading" && <p>Loading tasks...</p>}
+        {status === "error" && <p>We couldn't load your tasks.</p>}
+        {status === "empty" && <p>No tasks yet. Add your first one below.</p>}
+      </div>
+
+      {status === "error" && (
+        <button onClick={loadTasks}>Try again</button>
+      )}
+
+      {showContent && (
         <>
-          <FilterBar filter={filter} onFilterChange={setFilter} />
-          <TaskList
-            tasks={tasks}
-            filter={filter}
-            onToggleTask={handleToggleTask}
-          />
+          <NewTaskForm onAddTask={handleAddTask} />
+          {status === "success" && (
+            <>
+              <FilterBar filter={filter} onFilterChange={setFilter} />
+              <TaskList
+                tasks={tasks}
+                filter={filter}
+                onToggleTask={handleToggleTask}
+              />
+            </>
+          )}
         </>
       )}
     </div>
   );
 }
+
 
 export default TaskBoard;

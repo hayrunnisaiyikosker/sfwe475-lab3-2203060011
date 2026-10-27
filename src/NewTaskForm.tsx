@@ -27,14 +27,26 @@ function NewTaskForm({ onAddTask }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input value={title} onChange={(e) => setTitle(e.target.value)} />
-      {errors.title && <p>{errors.title[0]}</p>}
-      <input value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
-      {errors.dueDate && <p>{errors.dueDate[0]}</p>}
-      <button type="submit">Add task</button>
-    </form>
-  );
+  <form onSubmit={handleSubmit}>
+    <label htmlFor="title">Task title</label>
+    <input
+      id="title"
+      value={title}
+      onChange={(e) => setTitle(e.target.value)}
+    />
+    {errors.title && <p>{errors.title[0]}</p>}
+
+    <label htmlFor="dueDate">Due date</label>
+    <input
+      id="dueDate"
+      value={dueDate}
+      onChange={(e) => setDueDate(e.target.value)}
+    />
+    {errors.dueDate && <p>{errors.dueDate[0]}</p>}
+
+    <button type="submit">Add task</button>
+  </form>
+);
 }
 
 export default NewTaskForm;
