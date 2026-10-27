@@ -10,7 +10,11 @@ function TaskCard({ title, done, dueDate, onToggle }: TaskCardProps) {
     <div className="task-card">
       <h3>{title}</h3>
       {dueDate && <p>Due: {dueDate}</p>}
-      <TaskCheckbox done={done} onToggle={onToggle} />
+      <TaskCheckbox
+        done={done}
+        onToggle={onToggle}
+        taskTitle={title}
+/>
     </div>
   );
 }
