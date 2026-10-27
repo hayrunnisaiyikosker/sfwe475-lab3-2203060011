@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from "react";
 import type { Task, CreateTaskInput } from "./schemas";
 import { simulateFetchTasks } from "./mockApi";
@@ -11,6 +12,7 @@ const MIN_LOADING_MS = 400;
 function TaskBoard() {
   const [status, setStatus] =
     useState<"loading" | "success" | "empty" | "error">("loading");
+
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<Filter>("all");
 
@@ -24,7 +26,7 @@ function TaskBoard() {
       setTimeout(apply, remaining);
     };
 
-    simulateFetchTasks() // delayMs: 50 testini kaldırdım
+    simulateFetchTasks()
       .then((data) =>
         finish(() => {
           setTasks(data);
@@ -39,41 +41,58 @@ function TaskBoard() {
   }, [loadTasks]);
 
   function handleAddTask(input: CreateTaskInput) {
-    setTasks((prev) => [
-      ...prev,
-      { id: prev.length + 1, title: input.title, done: false },
-    ]);
+    const newTask: Task = {
+      id: Date.now(),
+      title: input.title,
+      dueDate: input.dueDate || undefined,
+      done: input.status === "done",
+    };
+
+    setTasks((prev) => [...prev, newTask]);
     setStatus("success");
   }
 
   function handleToggleTask(id: number) {
-    setTasks(
-      tasks.map((task) =>
+    setTasks((prev) =>
+      prev.map((task) =>
         task.id === id ? { ...task, done: !task.done } : task
       )
     );
   }
 
-    const showContent = status === "success" || status === "empty";
+  const showContent = status === "success" || status === "empty";
 
   return (
     <div>
       <div aria-live="polite">
         {status === "loading" && <p>Loading tasks...</p>}
-        {status === "error" && <p>We couldn't load your tasks.</p>}
-        {status === "empty" && <p>No tasks yet. Add your first one below.</p>}
+
+        {status === "error" && (
+          <p>We couldn't load your tasks.</p>
+        )}
+
+        {status === "empty" && (
+          <p>No tasks yet. Add your first one below.</p>
+        )}
       </div>
 
       {status === "error" && (
-        <button onClick={loadTasks}>Try again</button>
+        <button type="button" onClick={loadTasks}>
+          Try again
+        </button>
       )}
 
       {showContent && (
         <>
           <NewTaskForm onAddTask={handleAddTask} />
+
           {status === "success" && (
             <>
-              <FilterBar filter={filter} onFilterChange={setFilter} />
+              <FilterBar
+                filter={filter}
+                onFilterChange={setFilter}
+              />
+
               <TaskList
                 tasks={tasks}
                 filter={filter}
@@ -86,6 +105,5 @@ function TaskBoard() {
     </div>
   );
 }
-
 
 export default TaskBoard;

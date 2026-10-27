@@ -11,3 +11,6 @@
 ## Strand 3: Keyboard-only test
   It worked verry well actually.
   Updated filter button labels to make their purpose clearer and added `aria-pressed` to communicate the selected filter state to screen readers.
+
+## explain why the disabled button alone is not a substitute for the Zod check
+  When the title is empty, the system can disable the button to help the user understand that they must enter a title first. But this does not mean the data is always correct. The user can remove the disabled attribute or submit the form in another way. There is still a chance that an empty title can be sent. That is why we need Zod validation too. If we only use the disabled button, we may miss invalid data.
